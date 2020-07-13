@@ -1,0 +1,21 @@
+{
+  "name": "extension",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^4.5.0",
+    "cron-builder": "^0.3.0",
+    "flatpickr": "^4.6.3",
+    "jquery": "^3.5.1",
+    "later": "^1.2.0",
+    "moment": "^2.27.0",
+    "popper.js": "^1.16.1",
+    "sweetalert2": "^9.15.2"
+  }
+}

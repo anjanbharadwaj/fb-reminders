@@ -1,0 +1,21 @@
+{
+    "manifest_version": 2,
+    "name": "MessengerUtils",
+    "version": "0.1",
+    "content_scripts": [
+        {
+            "matches": ["*://www.messenger.com/*"],
+            "css": ["/thirdParty/bootstrap.css", "/thirdParty/flatpickr.min.css"],
+            "js": ["/thirdParty/jquery.min.js", "/thirdParty/bootstrap.min.js","content-final.js"]
+
+        }
+    ],
+    "web_accessible_resources": ["assets/calendar-icon.svg","/thirdParty/bootstrap.min.css", "/thirdParty/flatpickr.min.css", "/thirdParty/jquery.min.js", "/thirdParty/bootstrap.min.js",  "dialog.html", "dialog.css"],
+    "permissions": ["tabs", "<all_urls>"],
+    
+    "background": {
+        "scripts":["background.js"]
+    },
+    "content_security_policy": "script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net; object-src 'self'"
+
+}

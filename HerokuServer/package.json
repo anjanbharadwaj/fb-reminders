@@ -1,0 +1,22 @@
+{
+  "name": "messengerplatform",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "devStart": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "datejs": "^1.0.0-rc3",
+    "dotenv": "^8.2.0",
+    "express": "*",
+    "mongodb": "^3.5.9",
+    "mongoose": "^5.9.21"
+  },
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": "10.x"
+  }
+}
