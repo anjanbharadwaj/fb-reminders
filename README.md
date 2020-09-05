@@ -10,7 +10,6 @@ This is a personal project I've been working on to make messenger.com a little m
  - [ ] Update guide to explain Heroku setup
  - [ ] Add more utilities to extension
 	 - [ ] Random number generator/random user selector
-	 - [ ]  
 
 # Setup
 
