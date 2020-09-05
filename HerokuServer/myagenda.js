@@ -21,7 +21,7 @@ const login = require("facebook-chat-api");
 
 const fs = require("fs");
 var api_instance = "";
-login({email: "gjacbev_moidusen_1587767783@tfbnw.net", password: "8npe599gp5a"}, (err, api) => {
+login({email: "BOT_EMAIL", password: "BOT_PASSWORD"}, (err, api) => {
     if(err) return console.error(err);
     api_instance = api;
     console.log("yo");
