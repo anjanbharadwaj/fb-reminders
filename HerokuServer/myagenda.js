@@ -11,7 +11,7 @@ const CalendarEvent = require('./models/calendar-event')
 const Chat = require('./models/chat')
 var ObjectId = require('mongoose').Types.ObjectId; 
 
-const connectionString = 'mongodb://localhost:27017/agendatest';
+const connectionString = 'mongodb://localhost:27017/agendatest'; //this should be your connection string, as this is a local DB, but if it doesn't work for you, you may not be using the default localhost port.
 
 const agenda = new Agenda({
     db: {address: connectionString, collection: 'jobs'},
@@ -55,7 +55,7 @@ agenda.define('send reminder', {priority: 'high', concurrency: 10}, async job =>
 
 async function sendAlert(eventname, chatid, job, reminder_id, chatobject){
     console.log("im in here" + api_instance)
-    await api_instance.sendMessage(eventname, "4327274094013230");
+    await api_instance.sendMessage(eventname, chatid); //await api_instance.sendMessage(eventname, "4327274094013230");
     await job.remove();
     chatobject.reminders.id(reminder_id).remove();
       console.log(chatobject.reminders)
