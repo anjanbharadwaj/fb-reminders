@@ -92,20 +92,23 @@ router.put('/:chatid', getChat, async (req, res) => {
   // CalendarEvent.findByIdAndUpdate(id, { $set: }, options, callback)
   try{
     var oldhumantime = existingchat.reminders.id(idToUpdate).humanTime;
+    console.log("oldhumantime vs reminderjson time")
     existingchat.reminders.id(idToUpdate).title = reminderJson.title
     existingchat.reminders.id(idToUpdate).description = reminderJson.description
     existingchat.reminders.id(idToUpdate).cronTime = reminderJson.cronTime
     existingchat.reminders.id(idToUpdate).humanTime = reminderJson.humanTime
     existingchat.reminders.id(idToUpdate).priority = reminderJson.priority
 
-    existingchat.save(function (err) {
+    existingchat.save(async function (err) {
       if (err) return handleError(err);
       console.log('the subdocs were updated');
-      // if(Date.parse(oldhumantime) != Date.parse(reminderJson.humanTime)){
+
+      //save some time: don't need to reschedule a job if we didnt actually change the time/date, and only changed the title/description
+      if(Date.parse(oldhumantime) != Date.parse(reminderJson.humanTime)){
         console.log("timechange")
-        undispatchMessage(req.params.chatid, ObjectId(idToUpdate))
-        dispatchMessage(req.params.chatid, ObjectId(idToUpdate), Date.parse(reminderJson.humanTime))  
-      // }
+        await undispatchMessage(req.params.chatid, ObjectId(idToUpdate))
+        await dispatchMessage(req.params.chatid, ObjectId(idToUpdate), Date.parse(reminderJson.humanTime))  
+      }
 
       res.json(existingchat);
     });

@@ -43,6 +43,9 @@ function onPostEdit() {
     mins += 12*60
   }
   date.setMinutes(mins)
+  console.log(eventname)
+  console.log(reminderid)
+  console.log(description)
   console.log("DATE:" + date)
   console.log("TIME:" + time)
   var mytimecron = buildCron(date);
@@ -201,9 +204,12 @@ function openModal() {
   var mychatid = document.location.href.replace("https://www.messenger.com/t/","")
 	console.log("openModal")
   var elems = document.querySelectorAll('.modal');
-
+  function combined(){
+    pageBack()
+    destroyPickers()
+  }
   const options = {
-    onCloseStart: destroyPickers
+    onCloseStart: combined
   };
 	var instances = M.Modal.init(elems, options);
 	var elem = document.querySelector('#myModal');
@@ -305,7 +311,7 @@ function editReminder(element){
   dateinstance = M.Datepicker.init(date_picker_elem, options);
   
   var time_picker_elem = document.querySelector('.timepicker');
-  timeinstance = M.Timepicker.init(time_picker_elem, optionstime);
+  timeinstance = M.Timepicker.init(time_picker_elem);
 
   var back_button = document.getElementById("back")
   var edit_button = document.getElementById("add")
