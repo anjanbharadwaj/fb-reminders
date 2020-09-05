@@ -49,6 +49,9 @@ chrome.runtime.onMessage.addListener(function(request) {
   if (request.type === 'event_create'){
     createEvent(request.title, request.desc, request.cron, request.date, request.priority);
   }
+  else if (request.type === 'event_edit'){
+    editEvent(request.reminderid, request.title, request.desc, request.cron, request.date, request.priority);
+  }
   if (request.type === 'reminders_read'){
     return loadReminders(oldtabid)
   }
@@ -61,6 +64,24 @@ function createEvent(title, description, cron, date, priority) {
   console.log(title + "," + description + ", " + cron + "," + date + ", " + priority)
   xhr.send(JSON.stringify({
       reminder: {
+        title: title,
+        description: description,
+        cronTime: cron,
+        humanTime: date,
+        priority: priority
+      }
+  }));
+//  console.log(password);
+};
+
+function editEvent(reminderid, title, description, cron, date, priority) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("PUT", "http://localhost:3000/calendar/"+chatid, true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  console.log(title + "," + description + ", " + cron + "," + date + ", " + priority)
+  xhr.send(JSON.stringify({
+      reminder: {
+        updateId: reminderid,
         title: title,
         description: description,
         cronTime: cron,

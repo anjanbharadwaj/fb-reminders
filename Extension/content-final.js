@@ -29,8 +29,33 @@ function onPost() {
 
 };
 
-function loadReminders(){
-}
+
+function onPostEdit() {
+  var eventname = document.getElementById("eventname").value;
+  var reminderid = document.getElementById("eventname").getAttribute("data-reminderid");
+  var description = document.getElementById("description").value;
+  // var date = document.getElementById("datepicker");
+  var time = document.getElementById("timepicker").value;
+  var date = dateinstance.date
+  // var time = timeinstance.time
+  var mins = parseInt(time.split(":")[0]) * 60 + parseInt(time.split(":")[1])
+  if(timeinstance.amOrPm == "PM"){
+    mins += 12*60
+  }
+  date.setMinutes(mins)
+  console.log("DATE:" + date)
+  console.log("TIME:" + time)
+  var mytimecron = buildCron(date);
+  chrome.runtime.sendMessage({type:'event_edit', reminderid: reminderid, title: eventname, desc: description, cron: mytimecron, date: date, priority: "low_priority"}, function() {
+    chrome.runtime.sendMessage({type: "reminders_read"}, function(response) {
+      pageBack()
+    });
+  
+  });
+  
+
+};
+
 
 function buildCron(date){
     const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN",
@@ -126,13 +151,7 @@ function insertButton(){
 
 }
 setupModal()
-// window.addEventListener("DOMContentLoaded", () => {
-//   // DOM ready! Images, frames, and other subresources are still downloading.
-//   console.log("Done!")
-//   createMessage()
-//   console.log("Done 2!")
 
-// });
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if(request.type==="switchTab"){
         if (request.message === 'TabUpdated') {
@@ -255,6 +274,7 @@ function editReminder(element){
   element = element.parentElement  
   var priority_level = element.getElementsByClassName('priority-level')[0].innerHTML;
   var event_name = element.getElementsByClassName('title')[0].innerHTML;
+  var reminderid = element.getElementsByClassName('title')[0].getAttribute("data-reminderid");
   var datetime = element.getElementsByClassName('datetime')[0].innerHTML;
   var description = element.getElementsByClassName('description')[0].innerHTML;
   var content1 = document.getElementById('content1')
@@ -263,6 +283,7 @@ function editReminder(element){
   content2.style.display = "initial";
 
   document.getElementById("eventname").value = event_name;
+  document.getElementById("eventname").setAttribute("data-reminderid", reminderid);
   document.getElementById("description").value = description;
   results = convertDateToPickers(datetime)
 
@@ -277,11 +298,14 @@ function editReminder(element){
     format: 'mmmm d yyyy',
     setDefaultDate: true
   };
-
+  const optionstime = {
+    format: 'mmmm d yyyy',
+    defaultTime: true
+  };
   dateinstance = M.Datepicker.init(date_picker_elem, options);
   
   var time_picker_elem = document.querySelector('.timepicker');
-  timeinstance = M.Timepicker.init(time_picker_elem);
+  timeinstance = M.Timepicker.init(time_picker_elem, optionstime);
 
   var back_button = document.getElementById("back")
   var edit_button = document.getElementById("add")
@@ -289,6 +313,7 @@ function editReminder(element){
 
   back_button.onclick = pageBack
 
+  edit_button.onclick = onPostEdit
   
 
 }
@@ -331,6 +356,7 @@ function setupRemindersBox(reminders){
 }
 
 function injectOneReminder(reminder){
+  var reminderid = reminder._id;
   var title = reminder.title;
   var description = reminder.description;
   var date = reminder.humanTime
@@ -350,6 +376,7 @@ function injectOneReminder(reminder){
 
   var child2 = document.createElement("span")
   child2.className = "title"
+  child2.setAttribute("data-reminderid", reminderid)
   child2.innerHTML = title
 
   var child3 = document.createElement("p")

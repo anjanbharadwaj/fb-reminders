@@ -2,9 +2,10 @@ const express = require('express')
 const router = express.Router()
 const CalendarEvent = require('../models/calendar-event')
 const Chat = require('../models/chat')
-const ObjectId = require('mongoose').Types.ObjectId
-const myagenda = require('../myagenda')
+var ObjectId = require('mongoose').Types.ObjectId; 
+const myagenda = require('../myagenda');
 var dispatchMessage = myagenda.dispatchMessage;
+var undispatchMessage = myagenda.undispatchMessage;
 
 //test: get all calendar events globally
 router.get('/', async (req, res) => {
@@ -44,6 +45,7 @@ router.post('/:chatid', getChat, async (req, res) => {
             reminders: event
         })
         try {
+            console.log(typeof req.params.chatid)
             dispatchMessage(req.params.chatid, event._id, Date.parse(reminderJson.humanTime))
             const chatUpdateReminders = await chat.save()
             res.status(201).json(chatUpdateReminders)
@@ -53,6 +55,7 @@ router.post('/:chatid', getChat, async (req, res) => {
     } else{
         existingchat.reminders = existingchat.reminders.concat(event)
         try {
+            console.log(typeof req.params.chatid)
             dispatchMessage(req.params.chatid, event._id, Date.parse(reminderJson.humanTime))
             const chatUpdateReminders = await existingchat.save()
             res.status(201).json(chatUpdateReminders)
@@ -88,6 +91,7 @@ router.put('/:chatid', getChat, async (req, res) => {
   console.log("updateid" + idToUpdate)
   // CalendarEvent.findByIdAndUpdate(id, { $set: }, options, callback)
   try{
+    var oldhumantime = existingchat.reminders.id(idToUpdate).humanTime;
     existingchat.reminders.id(idToUpdate).title = reminderJson.title
     existingchat.reminders.id(idToUpdate).description = reminderJson.description
     existingchat.reminders.id(idToUpdate).cronTime = reminderJson.cronTime
@@ -97,6 +101,12 @@ router.put('/:chatid', getChat, async (req, res) => {
     existingchat.save(function (err) {
       if (err) return handleError(err);
       console.log('the subdocs were updated');
+      // if(Date.parse(oldhumantime) != Date.parse(reminderJson.humanTime)){
+        console.log("timechange")
+        undispatchMessage(req.params.chatid, ObjectId(idToUpdate))
+        dispatchMessage(req.params.chatid, ObjectId(idToUpdate), Date.parse(reminderJson.humanTime))  
+      // }
+
       res.json(existingchat);
     });
   }catch(err) {
