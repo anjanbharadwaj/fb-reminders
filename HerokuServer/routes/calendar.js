@@ -3,7 +3,8 @@ const router = express.Router()
 const CalendarEvent = require('../models/calendar-event')
 const Chat = require('../models/chat')
 const ObjectId = require('mongoose').Types.ObjectId
-
+const myagenda = require('../myagenda')
+var dispatchMessage = myagenda.dispatchMessage;
 
 //test: get all calendar events globally
 router.get('/', async (req, res) => {
@@ -30,9 +31,11 @@ router.post('/:chatid', getChat, async (req, res) => {
     reminderJson = req.body.reminder
     const event = new CalendarEvent({
         title: reminderJson.title,
+        description: reminderJson.description,
         cronTime: reminderJson.cronTime,
-        humanTime: reminderJson.humanTime
-    })
+        humanTime: reminderJson.humanTime,
+        priority: reminderJson.priority
+    });
     console.log("Existing Chat" + existingchat)
     if(existingchat === undefined || existingchat === null){
         
@@ -41,6 +44,7 @@ router.post('/:chatid', getChat, async (req, res) => {
             reminders: event
         })
         try {
+            dispatchMessage(req.params.chatid, event._id, Date.parse(reminderJson.humanTime))
             const chatUpdateReminders = await chat.save()
             res.status(201).json(chatUpdateReminders)
           } catch (err) {
@@ -49,6 +53,7 @@ router.post('/:chatid', getChat, async (req, res) => {
     } else{
         existingchat.reminders = existingchat.reminders.concat(event)
         try {
+            dispatchMessage(req.params.chatid, event._id, Date.parse(reminderJson.humanTime))
             const chatUpdateReminders = await existingchat.save()
             res.status(201).json(chatUpdateReminders)
           } catch (err) {
@@ -84,8 +89,10 @@ router.put('/:chatid', getChat, async (req, res) => {
   // CalendarEvent.findByIdAndUpdate(id, { $set: }, options, callback)
   try{
     existingchat.reminders.id(idToUpdate).title = reminderJson.title
+    existingchat.reminders.id(idToUpdate).description = reminderJson.description
     existingchat.reminders.id(idToUpdate).cronTime = reminderJson.cronTime
     existingchat.reminders.id(idToUpdate).humanTime = reminderJson.humanTime
+    existingchat.reminders.id(idToUpdate).priority = reminderJson.priority
 
     existingchat.save(function (err) {
       if (err) return handleError(err);

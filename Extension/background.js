@@ -1,5 +1,6 @@
 var myRegExp = /https?:\/\/messenger\.com/;
 var chatid = ""
+var oldtabid = ""
 // use a regexp to match the URLs you want
 // for example, this will only match stackoverflow.com pages
 
@@ -22,19 +23,23 @@ chrome.runtime.onInstalled.addListener(function() {
           currentWindow: true
         }, function(tabs) {
           var tab = tabs[0];
-          if((tab.url+"").includes("messenger.com")){
-            chatid = (tab.url + "").replace("https://www.messenger.com/t/","");
-            console.log("CHATID: " + chatid)
-            loadReminders(tabId)
+          // if((tab.url+"").includes("https://www.facebook.com/messages/")){
+          //   tempchatid = (tab.url + "").replace("https://www.facebook.com/messages/t/","");
+            if((tab.url+"").includes("messenger.com")){
+            tempchatid = (tab.url + "").replace("https://www.messenger.com/t/","");
+            tempchatid = tempchatid.split("#")[0]
+            if(tabId != oldtabid || tempchatid != chatid){
+              oldtabid = tabId
+              chatid = tempchatid
+              console.log("CHATID: " + chatid)
+              // loadReminders(tabId)
+              chrome.tabs.sendMessage(tabId, {
+                type: "switchTab",
+                  message: 'TabUpdated'
+                });
+            }
           }
         });
-        // if (window.location.href.includes('www.messenger.com/t/')) {
-            chrome.tabs.sendMessage(tabId, {
-              type: "switchTab",
-                message: 'TabUpdated'
-              });
-        // }
-        
       }
     })
 });
@@ -42,51 +47,39 @@ chrome.runtime.onInstalled.addListener(function() {
 
 chrome.runtime.onMessage.addListener(function(request) {
   if (request.type === 'event_create'){
-    createEvent(request.title, request.timecron, request.time);
+    createEvent(request.title, request.desc, request.cron, request.date, request.priority);
   }
-  if (request.type === 'request_popup') {
-    chatid = request.chatid
-    // chrome.tabs.executeScript(null, {file: "popup.js"});
-
-      chrome.tabs.create({
-          url: chrome.extension.getURL('dialog.html'),
-          active: false
-      }, function(tab) {
-          // After the tab has been created, open a window to inject the tab
-          chrome.windows.create({
-              tabId: tab.id,
-              type:'popup',
-              height: 400,
-              width: 400,
-              focused: true
-              // incognito, top, left, ...
-          });
-      });
+  if (request.type === 'reminders_read'){
+    return loadReminders(oldtabid)
   }
 });
 
-function createEvent(title, timecron, time) {
+function createEvent(title, description, cron, date, priority) {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", "http://localhost:3000/calendar/"+chatid, true);
   xhr.setRequestHeader('Content-Type', 'application/json');
-  console.log(title + "," + timecron + "," + time)
+  console.log(title + "," + description + ", " + cron + "," + date + ", " + priority)
   xhr.send(JSON.stringify({
       reminder: {
         title: title,
-        cronTime: timecron,
-        humanTime: time
+        description: description,
+        cronTime: cron,
+        humanTime: date,
+        priority: priority
       }
   }));
 //  console.log(password);
 };
 
 function loadReminders(tabId) {
+  console.log("Loading Reminders from: " + chatid)
   var xhr = new XMLHttpRequest();
   xhr.open("GET", "http://localhost:3000/calendar/"+chatid, true);
   xhr.send();
   xhr.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       console.log(xhr.responseText);
+      // return xhr.responseText
       chrome.tabs.sendMessage(tabId, {
         type: "loadReminders",
         message: xhr.responseText

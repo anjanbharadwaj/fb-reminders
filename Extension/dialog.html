@@ -1,37 +1,89 @@
-<div class="container">
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Reminders</h4>
-        </div>
-        <div class="modal-body">
-         
+<!-- <link type="text/css" src="/thirdParty/bttn.min.css"/> -->
+<div class="customclass">
+  <div id="myModal" class="customclass modal">
+    <div class="customclass modal-content">
 
-          <form>
-            <!-- <div class="form__group field">
-              <input type="input" class="form__field" placeholder="Event Name" name="title" id='title' required />
-              <label for="name" class="form__label">Event Name</label>
-            </div> -->
-            <input id="title" class="_2c1v _30e7" type="text" placeholder="Event Name">
-            <input type="text" id="basicDate" placeholder="Please select Date Time"data-input>
-          </form>
+      <div id="content1">
+        <div class="row">
+          <div class="col s6 offset-s11">
+            <a class="btn-floating btn-large waves-effect waves-light light-blue add-reminder-btn"><i class="material-icons add-reminder-btn">add</i></a>
+          </div>
+        </div>
+        <ul id="remindersCollection" class="collection" style="margin-bottom: 5%;">
+          <li class="collection-item avatar">
+            <i class="material-icons circle red priority-level">priority_high</i>
+            <span class="title">Reminder 1</span>
+            <p class="datetime">August 20th 2020, 6:30 pm</p>
+            <p class="description">Description 1</p>
+            <a class="secondary-content edit-reminder-btn"><i class="material-icons light-blue-text">edit</i></a>
+          </li>
+          <li class="collection-item avatar">
+            <i class="material-icons circle red priority-level">priority_high</i>
+            <span class="title">Reminder 2</span>
+            <p class="datetime">February 2nd 2020, 6:30 pm</p>
+            <p class="description">Description 2</p>
+            <a class="secondary-content edit-reminder-btn"><i class="material-icons light-blue-text">edit</i></a>
+          </li>
+          <li class="collection-item avatar">
+            <i class="material-icons circle green priority-level">low_priority</i>
+            <span class="title">Reminder 3</span>
+            <p class="datetime">October 8th 2020, 6:30 pm</p>
+            <p class="description">Description 3</p>
+            <a class="secondary-content edit-reminder-btn"><i class="material-icons light-blue-text">edit</i></a>
+          </li> 
+          <li class="collection-item avatar">
+            <i class="material-icons circle green priority-level">low_priority</i>
+            <span class="title">Reminder 4</span>
+            <p class="datetime">August 7th 2020, 6:30 pm</p>
+            <p class="description">Description 4</p>
+            <a class="secondary-content edit-reminder-btn"><i class="material-icons light-blue-text">edit</i></a>
+          </li>
+        </ul>
 
-        </div>
-        <div class="modal-footer">
-          <button class="bttn-minimal bttn-sm bttn-primary" id="positive">Save</button>
-          <button class="bttn-minimal bttn-sm bttn-primary" id="negative">Cancel</button>
-          <!-- <button type="button" class=".bttn-minimal.bttn-md" id="positive">Save</button> -->
-          <!-- <button type="button" class="btn_custom btn-default" id="negative" data-dismiss="modal">Cancel</button> -->
-        </div>
       </div>
+
+      <div id="content2">
+            <div class="row">
+              <div class="input-field col s6">
+                <input id="eventname" type="text">
+                <label for="input_text">Event Name</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <textarea id="description" class="materialize-textarea"></textarea>
+                <label for="textarea2">Description</label>
+              </div>
+            </div>
+          <div class="row">
+            <div class="input-field col s6">
+              <input id="datepicker" type="text" class="datepicker">
+              <label for="datepicker" class="">Date</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="timepicker" type="text" class="timepicker">
+              <label for="timepicker" class="">Time</label>
+            </div>
+          </div>
+          <!-- <div class="center">
+            <p>
+              <input type="customcheckbox" name="Regular" class="a"/>
+              <input type="customcheckbox" name="Priority!" class="b"/>
+            </p>
+          </div> -->
+
+          <div class="row">
+            <div class="col s6 offset-s9">
+              <a id="back" class="waves-effect waves-light btn">Back</a>
+              <a id="add" class="waves-effect waves-light btn">Add</a>
+            </div>
+          </div>
+    
+      </div>
+
       
     </div>
+
   </div>
-  
-</div>
-<!-- <script src="popup.js"></script> -->
 
-
+</div>      

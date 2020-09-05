@@ -1,1 +1,3 @@
-var foo = require('./foo.js');
+function addReminder(){
+    console.log("Hey!")
+}

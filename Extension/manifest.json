@@ -5,12 +5,23 @@
     "content_scripts": [
         {
             "matches": ["*://www.messenger.com/*"],
-            "css": ["/thirdParty/bootstrap.css", "/thirdParty/flatpickr.min.css"],
-            "js": ["/thirdParty/jquery.min.js", "/thirdParty/bootstrap.min.js","content-final.js"]
+            "js": ["/thirdParty/jquery.min.js", "content-final.js"],
+            "cs": ["/thirdParty/materialize.css"],
+            "all_frames": true
 
         }
     ],
-    "web_accessible_resources": ["assets/calendar-icon.svg","/thirdParty/bootstrap.min.css", "/thirdParty/flatpickr.min.css", "/thirdParty/jquery.min.js", "/thirdParty/bootstrap.min.js",  "dialog.html", "dialog.css"],
+    "web_accessible_resources": [
+        "assets/calendar-icon.svg",
+        "/thirdParty/jquery.min.js",
+        "/thirdParty/bootstrap.min.css",
+        "/thirdParty/bootstrap.min.js",
+        "/thirdParty/materialize.css",
+        "/thirdParty/materialize.js",
+        "dialog.html",
+        "main.js",
+        "/fonts/*" 
+    ],
     "permissions": ["tabs", "<all_urls>"],
     
     "background": {
