@@ -1,7 +1,7 @@
-# MessengerPlatform
+# 
 
 # Overview
-This is a personal project I've been working on to make messenger.com a little more functional. In the past, users used to be able to set reminders within group chats, which my friends and I all found super useful. Unfortunately, Facebook recently removed this feature, so I decided to create a workaround, in the form of a Chrome Extension. Knowing basically nothing about Chrome Extensions, nor the ME~~R~~N stack (I didn't end up using React, but rather vanilla Javascript, with my extension), this was a fun learning experience for me!
+This is a personal project I've been working on to make messenger.com a little more functional. In the past, users used to be able to set reminders within group chats, which my friends and I all found super useful. Unfortunately, Facebook recently removed this feature, so I decided to create a workaround, in the form of a Chrome Extension.
 # ToDo
 
  - [ ] Finish setting up online MongoDB -- currently using local DB stored on computer
@@ -15,7 +15,7 @@ This is a personal project I've been working on to make messenger.com a little m
 
 There are two components to this project: the extension and the web server, which can be hosted locally or on Heroku, Digital Ocean, etc.
 
- 1. Clone from this repository with `git clone https://github.com/anjanbharadwaj/MessengerPlatform.git`
+ 1. Clone from this repository with `git clone https://github.com/anjanbharadwaj/fb-reminders.git`
  2. Head to `chrome://extensions` in your Chrome browser
  3. Click the **load unpacked** button at the top left, and select the **/MessengerPlatform/Extension** folder
  4. Once it loads in, you should be set with this component!
